@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  html,body{margin:0;height:100%;background:#0a0a0a}
+</style>
+</helmet>
+<div data-screen-label="Release Video" style="position:fixed;inset:0">
+  <x-import component-from-global-scope="ReleaseScene" from="./animations.jsx ./release-scene.jsx" hint-size="100%,100%"></x-import>
+</div>
+</x-dc>
+</body>
+</html>
