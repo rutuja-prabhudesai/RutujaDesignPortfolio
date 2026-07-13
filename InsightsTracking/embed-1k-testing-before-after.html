@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What testing changed + before/after impact, animated</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#EAECF0;padding:28px;font-family:"Segoe UI",-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased;display:flex;justify-content:center}
+@keyframes dotGo{0%{transform:translateX(0);opacity:0}12%{opacity:1}88%{opacity:1}100%{transform:translateX(52px);opacity:0}}
+@keyframes leakGo{0%{transform:translate(0,0);opacity:0}12%{opacity:1}55%{transform:translate(26px,0);opacity:1}100%{transform:translate(32px,26px);opacity:0}}
+@keyframes dashDrift{to{stroke-dashoffset:-16}}
+@keyframes blinkLine{0%,100%{opacity:.75}50%{opacity:.12}}
+@keyframes pulseChip{0%,100%{box-shadow:0 0 0 0 rgba(122,111,240,.45)}50%{box-shadow:0 0 0 7px rgba(122,111,240,0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes growW{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+@keyframes areaIn{from{opacity:0}to{opacity:1}}
+@keyframes tokenGo{0%,5%{transform:translateX(0)}22%,27%{transform:translateX(268px)}44%,49%{transform:translateX(536px)}66%,71%{transform:translateX(804px)}88%,100%{transform:translateX(1072px)}}
+@keyframes stageGlow{0%{transform:translateY(0);box-shadow:0 1px 2px rgba(0,0,0,.05)}4%{transform:translateY(-4px);box-shadow:0 6px 18px rgba(122,111,240,.35)}16%{transform:translateY(0);box-shadow:0 1px 2px rgba(0,0,0,.05)}100%{transform:translateY(0);box-shadow:0 1px 2px rgba(0,0,0,.05)}}
+@keyframes outShow{0%{opacity:0;transform:translateY(6px)}4%{opacity:0;transform:translateY(6px)}9%{opacity:1;transform:translateY(0)}92%{opacity:1}100%{opacity:0}}
+@keyframes cyc5{0%{opacity:0;visibility:hidden}1%{opacity:0;visibility:visible}4%{opacity:1}19%{opacity:1}21%{opacity:0;visibility:hidden}100%{opacity:0;visibility:hidden}}
+@keyframes navCyc{0%{opacity:0}2%{opacity:1}19%{opacity:1}21%{opacity:0}100%{opacity:0}}
+@keyframes ringFill{from{stroke-dashoffset:264}to{stroke-dashoffset:var(--off)}}
+@keyframes popIn{0%{opacity:0;transform:scale(.6)}70%{opacity:1;transform:scale(1.07)}100%{opacity:1;transform:scale(1)}}
+@keyframes frictionPulse{0%,100%{box-shadow:0 0 0 0 rgba(209,52,56,.35)}50%{box-shadow:0 0 0 9px rgba(209,52,56,0)}}
+@keyframes boltIn{from{opacity:0;transform:translateY(12px) scale(.85)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes futureGo{0%,4%{transform:translateX(0)}22%,26%{transform:translateX(258px)}44%,48%{transform:translateX(516px)}66%,70%{transform:translateX(774px)}88%,100%{transform:translateX(1032px)}}
+@keyframes dashDriftV{to{stroke-dashoffset:-14}}
+@keyframes flowGlow{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes underlineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes sparkle{0%,100%{transform:rotate(45deg) scale(1);opacity:1}50%{transform:rotate(45deg) scale(.72);opacity:.6}}
+@keyframes checkIn{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+</style>
+</head>
+<body>
+<div class="dv-card" style="width:1240px;padding:40px;background:#fbfaf8">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:36px">
+<div>
+<div style="font-size:16px;font-weight:650;color:#242424;margin-bottom:18px">Usability testing → improvements</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="background:#fff;border:1px solid #e1dfdd;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<div style="flex:1;font-size:12.5px;color:#a4262c">"I don't trust the auto-tags"</div>
+<div style="color:#7a6ff0;font-size:15px">→</div>
+<div style="flex:1.2;font-size:12.5px;color:#242424;font-weight:600">Editable AI tags with visible confidence</div>
+</div>
+<div style="background:#fff;border:1px solid #e1dfdd;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<div style="flex:1;font-size:12.5px;color:#a4262c">"ADO creation feels like a black box"</div>
+<div style="color:#7a6ff0;font-size:15px">→</div>
+<div style="flex:1.2;font-size:12.5px;color:#242424;font-weight:600">Preview &amp; edit every field before write-back</div>
+</div>
+<div style="background:#fff;border:1px solid #e1dfdd;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<div style="flex:1;font-size:12.5px;color:#a4262c">"Merge suggestions are too aggressive"</div>
+<div style="color:#7a6ff0;font-size:15px">→</div>
+<div style="flex:1.2;font-size:12.5px;color:#242424;font-weight:600">Higher similarity threshold + one-click undo</div>
+</div>
+</div>
+</div>
+<div>
+<div style="font-size:16px;font-weight:650;color:#242424;margin-bottom:18px">Time to prepare, before → after</div>
+<div style="margin-bottom:20px">
+<div style="font-size:12px;color:#605e5c;margin-bottom:7px">Product submission</div>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><div style="height:16px;width:420px;background:#e1dfdd;border-radius:8px"></div><span style="font-size:12px;color:#8a8886">4–6 h</span></div>
+<div style="display:flex;align-items:center;gap:10px"><div style="height:16px;width:34px;background:#0f6cbd;border-radius:8px;transform-origin:left;animation:growW 1s ease both .4s"></div><span style="font-size:12px;font-weight:650;color:#0f6cbd">15–20 min</span></div>
+</div>
+<div>
+<div style="font-size:12px;color:#605e5c;margin-bottom:7px">Weekly OKR reporting</div>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><div style="height:16px;width:300px;background:#e1dfdd;border-radius:8px"></div><span style="font-size:12px;color:#8a8886">~3 h</span></div>
+<div style="display:flex;align-items:center;gap:10px"><div style="height:16px;width:34px;background:#0f6cbd;border-radius:8px;transform-origin:left;animation:growW 1s ease both .6s"></div><span style="font-size:12px;font-weight:650;color:#0f6cbd">~20 min</span></div>
+</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px">
+<div style="background:#fff;border:1px solid #e1dfdd;border-radius:12px;padding:22px 24px;animation:fadeUp .5s ease both .2s">
+<div style="font-size:24px;font-weight:650;color:#0f6cbd;line-height:1.1">5 AI skills</div>
+<div style="font-size:12.5px;color:#605e5c;margin-top:7px">shipped across the insight lifecycle</div>
+</div>
+<div style="background:#fff;border:1px solid #e1dfdd;border-radius:12px;padding:22px 24px;animation:fadeUp .5s ease both .35s">
+<div style="font-size:24px;font-weight:650;color:#0f6cbd;line-height:1.1">6+ tools unified</div>
+<div style="font-size:12.5px;color:#605e5c;margin-top:7px">into one CRM experience</div>
+</div>
+<div style="background:#fff;border:1px solid #e1dfdd;border-radius:12px;padding:22px 24px;animation:fadeUp .5s ease both .5s">
+<div style="font-size:24px;font-weight:650;color:#0f6cbd;line-height:1.1">3–5 h / week saved</div>
+<div style="font-size:12.5px;color:#605e5c;margin-top:7px">on administration and reporting</div>
+</div>
+</div>
+</div>
+<script>
+  document.querySelectorAll('[data-hover]').forEach(function(el){
+    var base = el.getAttribute('style') || '';
+    var hover = el.getAttribute('data-hover');
+    el.addEventListener('mouseenter', function(){ el.setAttribute('style', base + ';' + hover); });
+    el.addEventListener('mouseleave', function(){ el.setAttribute('style', base); });
+  });
+</script>
+</body>
+</html>
