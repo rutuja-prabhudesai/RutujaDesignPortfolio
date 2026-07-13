@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Future-state vision — one path, traveling signal (12s loop)</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#EAECF0;padding:28px;font-family:"Segoe UI",-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased;display:flex;justify-content:center}
+@keyframes dotGo{0%{transform:translateX(0);opacity:0}12%{opacity:1}88%{opacity:1}100%{transform:translateX(52px);opacity:0}}
+@keyframes leakGo{0%{transform:translate(0,0);opacity:0}12%{opacity:1}55%{transform:translate(26px,0);opacity:1}100%{transform:translate(32px,26px);opacity:0}}
+@keyframes dashDrift{to{stroke-dashoffset:-16}}
+@keyframes blinkLine{0%,100%{opacity:.75}50%{opacity:.12}}
+@keyframes pulseChip{0%,100%{box-shadow:0 0 0 0 rgba(122,111,240,.45)}50%{box-shadow:0 0 0 7px rgba(122,111,240,0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes growW{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+@keyframes areaIn{from{opacity:0}to{opacity:1}}
+@keyframes tokenGo{0%,5%{transform:translateX(0)}22%,27%{transform:translateX(268px)}44%,49%{transform:translateX(536px)}66%,71%{transform:translateX(804px)}88%,100%{transform:translateX(1072px)}}
+@keyframes stageGlow{0%{transform:translateY(0);box-shadow:0 1px 2px rgba(0,0,0,.05)}4%{transform:translateY(-4px);box-shadow:0 6px 18px rgba(122,111,240,.35)}16%{transform:translateY(0);box-shadow:0 1px 2px rgba(0,0,0,.05)}100%{transform:translateY(0);box-shadow:0 1px 2px rgba(0,0,0,.05)}}
+@keyframes outShow{0%{opacity:0;transform:translateY(6px)}4%{opacity:0;transform:translateY(6px)}9%{opacity:1;transform:translateY(0)}92%{opacity:1}100%{opacity:0}}
+@keyframes cyc5{0%{opacity:0;visibility:hidden}1%{opacity:0;visibility:visible}4%{opacity:1}19%{opacity:1}21%{opacity:0;visibility:hidden}100%{opacity:0;visibility:hidden}}
+@keyframes navCyc{0%{opacity:0}2%{opacity:1}19%{opacity:1}21%{opacity:0}100%{opacity:0}}
+@keyframes ringFill{from{stroke-dashoffset:264}to{stroke-dashoffset:var(--off)}}
+@keyframes popIn{0%{opacity:0;transform:scale(.6)}70%{opacity:1;transform:scale(1.07)}100%{opacity:1;transform:scale(1)}}
+@keyframes frictionPulse{0%,100%{box-shadow:0 0 0 0 rgba(209,52,56,.35)}50%{box-shadow:0 0 0 9px rgba(209,52,56,0)}}
+@keyframes boltIn{from{opacity:0;transform:translateY(12px) scale(.85)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes futureGo{0%,4%{transform:translateX(0)}22%,26%{transform:translateX(258px)}44%,48%{transform:translateX(516px)}66%,70%{transform:translateX(774px)}88%,100%{transform:translateX(1032px)}}
+@keyframes dashDriftV{to{stroke-dashoffset:-14}}
+@keyframes flowGlow{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes underlineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes sparkle{0%,100%{transform:rotate(45deg) scale(1);opacity:1}50%{transform:rotate(45deg) scale(.72);opacity:.6}}
+@keyframes checkIn{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+
+/* RESPONSIVE-ZOOM */
+.dv-card { zoom: 0.726; }
+@media (max-width: 800px) {
+  body { padding: 18px 10px; }
+  .dv-card { zoom: 0.524; }
+}
+@media (max-width: 400px) {
+  body { padding: 10px 6px; }
+  .dv-card { zoom: 0.202; }
+}
+</style>
+</head>
+<body>
+<div class="dv-card" style="width:1240px;padding:44px 48px 40px;background:linear-gradient(165deg,#fdfdfc,#f0f2fb)">
+<div style="font-size:22px;font-weight:650;color:#1c1c30;margin-bottom:2px">Future state — a single path</div>
+<div style="font-size:13px;color:#8a8886;margin-bottom:40px">from feedback to product decisions</div>
+<div style="position:relative;width:1132px">
+<div style="position:absolute;top:24px;left:50px;right:50px;height:2px;background:linear-gradient(90deg,#0f6cbd,#7a6ff0)"></div>
+<div style="position:absolute;top:17px;left:43px;width:16px;height:16px;border-radius:50%;background:#fff;border:4px solid #7a6ff0;box-shadow:0 0 16px rgba(122,111,240,.8);animation:futureGo 12s ease-in-out infinite"></div>
+<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px;padding-top:54px">
+<div style="background:#fff;border:1px solid #e7e5f0;border-radius:12px;padding:20px 18px;text-align:center;animation:stageGlow 12s linear infinite">
+<div style="font-size:12px;font-weight:650;color:#0f6cbd;margin-bottom:6px">01</div>
+<div style="font-size:13.5px;font-weight:650;color:#242424;line-height:1.35">Customer conversations</div>
+<div style="font-size:11.5px;color:#8a8886;margin-top:6px">all channels, one place</div>
+</div>
+<div style="background:#fff;border:1px solid #e7e5f0;border-radius:12px;padding:20px 18px;text-align:center;animation:stageGlow 12s linear infinite 2.6s">
+<div style="font-size:12px;font-weight:650;color:#2e63c9;margin-bottom:6px">02</div>
+<div style="font-size:13.5px;font-weight:650;color:#242424;line-height:1.35">Centralized insights</div>
+<div style="font-size:11.5px;color:#8a8886;margin-top:6px">single source of truth</div>
+</div>
+<div style="background:#fff;border:1px solid #e7e5f0;border-radius:12px;padding:20px 18px;text-align:center;animation:stageGlow 12s linear infinite 5.2s">
+<div style="font-size:12px;font-weight:650;color:#5a52d4;margin-bottom:6px">03</div>
+<div style="font-size:13.5px;font-weight:650;color:#242424;line-height:1.35">AI-assisted processing</div>
+<div style="font-size:11.5px;color:#8a8886;margin-top:6px">categorize · surface · rank</div>
+</div>
+<div style="background:#fff;border:1px solid #e7e5f0;border-radius:12px;padding:20px 18px;text-align:center;animation:stageGlow 12s linear infinite 7.8s">
+<div style="font-size:12px;font-weight:650;color:#6b5fe8;margin-bottom:6px">04</div>
+<div style="font-size:13.5px;font-weight:650;color:#242424;line-height:1.35">Product decisions</div>
+<div style="font-size:11.5px;color:#8a8886;margin-top:6px">confident, evidence-backed</div>
+</div>
+<div style="background:#fff;border:1px solid #e7e5f0;border-radius:12px;padding:20px 18px;text-align:center;animation:stageGlow 12s linear infinite 10.4s">
+<div style="font-size:12px;font-weight:650;color:#7a6ff0;margin-bottom:6px">05</div>
+<div style="font-size:13.5px;font-weight:650;color:#242424;line-height:1.35">Automated OKR reporting</div>
+<div style="font-size:11.5px;color:#8a8886;margin-top:6px">impact tracked automatically</div>
+</div>
+</div>
+</div>
+<div style="display:flex;gap:10px;margin-top:30px;flex-wrap:wrap">
+<span style="font-size:12px;font-weight:600;color:#0f548c;background:#deecf9;border-radius:14px;padding:6px 15px">one path</span>
+<span style="font-size:12px;font-weight:600;color:#0f548c;background:#deecf9;border-radius:14px;padding:6px 15px">one source of truth</span>
+<span style="font-size:12px;font-weight:600;color:#4c43b3;background:#efedfc;border-radius:14px;padding:6px 15px">less manual work</span>
+<span style="font-size:12px;font-weight:600;color:#4c43b3;background:#efedfc;border-radius:14px;padding:6px 15px">faster decisions</span>
+<span style="font-size:12px;font-weight:600;color:#365c22;background:#f1faec;border-radius:14px;padding:6px 15px">proven impact</span>
+</div>
+</div>
+<script>
+  document.querySelectorAll('[data-hover]').forEach(function(el){
+    var base = el.getAttribute('style') || '';
+    var hover = el.getAttribute('data-hover');
+    el.addEventListener('mouseenter', function(){ el.setAttribute('style', base + ';' + hover); });
+    el.addEventListener('mouseleave', function(){ el.setAttribute('style', base); });
+  });
+</script>
+</body>
+</html>
