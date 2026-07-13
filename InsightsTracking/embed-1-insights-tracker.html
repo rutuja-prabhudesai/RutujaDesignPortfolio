@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRM Insights Tracking</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#EAECF0;-webkit-font-smoothing:antialiased;font-family:'Segoe UI','Segoe UI Variable',system-ui,-apple-system,sans-serif;color:#242424}
+  .wrap{max-width:1360px;margin:0 auto;padding:28px 24px 40px}
+  .eyebrow{font-size:13px;font-weight:700;color:#0F6CBD;letter-spacing:.08em}
+  .htitle{margin:0;font-size:22px;font-weight:700}
+  .hsub{color:#8A8886;font-size:14px}
+  .headrow{display:flex;align-items:baseline;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+  .card{background:#FFFFFF;border:1px solid #E1DFDD;border-radius:12px;overflow:hidden;box-shadow:0 16px 44px rgba(15,20,30,.14)}
+  .topbar{height:48px;display:flex;align-items:center;gap:14px;padding:0 16px;background:#FAF9F8;border-bottom:1px solid #EDEBE9}
+  .dots{display:grid;grid-template-columns:repeat(3,4px);grid-template-rows:repeat(3,4px);gap:2px}
+  .dots span{width:4px;height:4px;background:#605E5C;display:block}
+  .search{width:240px;height:30px;border:1px solid #E1DFDD;border-radius:6px;background:#fff;display:flex;align-items:center;gap:8px;padding:0 10px;color:#8A8886;font-size:13px}
+  .avatar{width:28px;height:28px;border-radius:50%;background:#0F6CBD;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .body{display:flex}
+  .rail{width:56px;background:#FAF9F8;border-right:1px solid #EDEBE9;display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:4px}
+  .rail-item{width:44px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;position:relative}
+  .rail-dot{width:18px;height:18px;border-radius:4px;display:block}
+  .main{flex:1;min-width:0;background:#fff}
+  .cmdbar{height:52px;display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid #F3F2F1}
+  .cmdbar h3{margin:0;font-size:19px;font-weight:700}
+  .count-pill{background:#EFF6FC;color:#0F6CBD;font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px}
+  .spacer{flex:1}
+  .toggle-btn{height:32px;padding:0 14px;border:1px solid #E1DFDD;background:#fff;color:#323130;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+  .toggle-btn.left{border-radius:6px 0 0 6px}
+  .toggle-btn.right{border-radius:0 6px 6px 0;border-left:none}
+  .toggle-btn.active{background:#0F6CBD;color:#fff}
+  .new-btn{height:32px;padding:0 14px;border:none;border-radius:6px;background:#0F6CBD;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px}
+  .chips{display:flex;align-items:center;gap:8px;padding:12px 20px;border-bottom:1px solid #F3F2F1;flex-wrap:wrap}
+  .chips .label{font-size:12px;color:#8A8886;font-weight:600;margin-right:2px}
+  .chip{height:30px;padding:0 13px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;border:1px solid #E1DFDD;background:#fff;color:#323130}
+  .chip.active{background:#0F6CBD;color:#fff;border-color:#0F6CBD}
+  .grid-head{display:flex;align-items:center;gap:12px;padding:10px 20px;background:#FAF9F8;border-bottom:1px solid #EDEBE9;font-size:11px;font-weight:700;color:#605E5C;letter-spacing:.04em;text-transform:uppercase}
+  .row{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #F3F2F1;cursor:pointer;transition:background .12s}
+  .row:hover{background:#F7FAFE}
+  .checkbox{width:18px;height:18px;border:1.6px solid #C8C6C4;border-radius:4px;flex:none}
+  .title-cell{flex:1;min-width:0}
+  .title-cell .t{font-size:14px;font-weight:600;color:#242424;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .title-cell .m{font-size:12px;color:#8A8886;margin-top:2px}
+  .cat-pill{font-size:11px;font-weight:600;padding:4px 9px;border-radius:5px;white-space:nowrap}
+  .prio{display:flex;align-items:center;gap:6px;width:88px}
+  .prio-dot{width:8px;height:8px;border-radius:50%;display:block}
+  .conf{display:flex;align-items:center;gap:6px;width:70px}
+  .conf-track{width:26px;height:5px;border-radius:3px;background:#EDEBE9;display:block;overflow:hidden;position:relative}
+  .conf-fill{position:absolute;inset:0;background:#0F6CBD}
+  .owner{width:28px;height:28px;border-radius:50%;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .board{display:none;gap:14px;padding:18px 20px;overflow-x:auto;align-items:flex-start}
+  .board.show{display:flex}
+  .grid-view.hide{display:none}
+  .col{flex:none;width:236px;background:#FAF9F8;border:1px solid #EDEBE9;border-radius:10px;padding:12px}
+  .col-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .col-dot{width:9px;height:9px;border-radius:50%;display:block}
+  .col-name{font-size:13px;font-weight:700;color:#323130}
+  .col-count{margin-left:auto;font-size:12px;color:#8A8886;background:#fff;border:1px solid #E1DFDD;border-radius:6px;padding:1px 7px}
+  .kcard{background:#fff;border:1px solid #E1DFDD;border-radius:9px;padding:12px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:box-shadow .14s,transform .14s;margin-bottom:10px}
+  .kcard:hover{box-shadow:0 6px 16px rgba(15,20,30,.14);transform:translateY(-2px)}
+  .kcard-top{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+  .kcard-cat{font-size:10px;font-weight:700;padding:3px 7px;border-radius:5px}
+  .kcard-prio{margin-left:auto;width:7px;height:7px;border-radius:50%;display:block}
+  .kcard-title{font-size:13px;font-weight:600;line-height:1.35;color:#242424}
+  .kcard-meta{display:flex;align-items:center;gap:8px;margin-top:10px}
+  .kcard-owner{width:22px;height:22px;border-radius:50%;color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .kcard-cust{font-size:11px;color:#8A8886}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="headrow">
+    <span class="eyebrow">01 &mdash; TRACKER</span>
+    <h2 class="htitle">CRM Insights Tracking</h2>
+    <span class="hsub">Capture &middot; manage &middot; move every insight through one lifecycle</span>
+  </div>
+
+  <div class="card">
+    <div class="topbar">
+      <div class="dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <span style="font-size:14px;font-weight:600">Dynamics 365</span>
+      <span style="color:#C8C6C4">|</span>
+      <span style="font-size:14px;color:#605E5C">Customer Insights Manager</span>
+      <div class="spacer"></div>
+      <div class="search"><span style="width:12px;height:12px;border:1.6px solid #8A8886;border-radius:50%;display:inline-block"></span>Search insights</div>
+      <div class="avatar">RP</div>
+    </div>
+
+    <div class="body">
+      <div class="rail">
+        <div class="rail-item" style="background:#EAF2FB"><span class="rail-dot" style="background:#0F6CBD"></span></div>
+        <div class="rail-item"><span class="rail-dot" style="background:#8A8886"></span></div>
+        <div class="rail-item"><span class="rail-dot" style="background:#8A8886"></span></div>
+        <div class="rail-item"><span class="rail-dot" style="background:#8661C5"></span></div>
+        <div class="rail-item"><span class="rail-dot" style="background:#8A8886"></span></div>
+      </div>
+
+      <div class="main">
+        <div class="cmdbar">
+          <h3>Customer Insights</h3>
+          <span class="count-pill" id="countPill">9 shown</span>
+          <div class="spacer"></div>
+          <button class="toggle-btn left active" id="btnGrid">Grid</button>
+          <button class="toggle-btn right" id="btnBoard">Board</button>
+          <button class="new-btn"><span style="font-size:15px;line-height:1">+</span>New insight</button>
+        </div>
+
+        <div class="chips" id="chips"></div>
+
+        <div id="gridView" class="grid-view">
+          <div class="grid-head">
+            <span style="width:18px"></span>
+            <span style="flex:1;min-width:0">Insight</span>
+            <span style="width:130px">Category</span>
+            <span style="width:88px">Priority</span>
+            <span style="width:96px">Stage</span>
+            <span style="width:96px">Product area</span>
+            <span style="width:70px">AI conf.</span>
+            <span style="width:44px">Owner</span>
+          </div>
+          <div id="gridRows"></div>
+        </div>
+
+        <div id="boardView" class="board"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var catMap = {
+    'Feature Request':{bg:'#EFF6FC',fg:'#0F6CBD'},
+    'Blocker':{bg:'#FDF3F4',fg:'#C50F1F'},
+    'Sentiment':{bg:'#F1F8F1',fg:'#0E700E'},
+    'UX Friction':{bg:'#FBF6E9',fg:'#986F0B'},
+    'Performance':{bg:'#F5F0FB',fg:'#8661C5'}
+  };
+  var prioMap = {'Critical':'#C50F1F','High':'#B26C00','Medium':'#0F6CBD','Low':'#8A8886'};
+  var ownerMap = {'AN':'#0F6CBD','JR':'#8661C5','MK':'#986F0B','SK':'#0E700E'};
+  var stages = [
+    {key:'New', name:'New', color:'#8A8886'},
+    {key:'Triaged', name:'Triaged', color:'#8661C5'},
+    {key:'Prioritized', name:'Prioritized', color:'#0F6CBD'},
+    {key:'Handoff', name:'In Handoff', color:'#B26C00'},
+    {key:'Accepted', name:'Accepted', color:'#0E700E'}
+  ];
+  var cats = ['All','Feature Request','Blocker','Sentiment','UX Friction','Performance'];
+  var raw = [
+    {title:'Copilot usage analytics by department', customer:'Contoso · Teams', category:'Feature Request', priority:'High', stage:'New', owner:'AN', area:'M365 Copilot', conf:0.91, age:'2d'},
+    {title:'Purview data residency blocks EU rollout', customer:'Fabrikam · Email', category:'Blocker', priority:'Critical', stage:'New', owner:'JR', area:'Purview', conf:0.88, age:'1d'},
+    {title:'Praise for Copilot Excel formula help', customer:'Northwind · Meeting', category:'Sentiment', priority:'Low', stage:'Triaged', owner:'AN', area:'Excel', conf:0.94, age:'4d'},
+    {title:'Conditional Access setup is confusing', customer:'Adventure Works · Teams', category:'UX Friction', priority:'Medium', stage:'Triaged', owner:'MK', area:'Entra ID', conf:0.82, age:'3d'},
+    {title:'Fabric Direct Lake refresh scheduling', customer:'Tailspin · Email', category:'Feature Request', priority:'High', stage:'Prioritized', owner:'JR', area:'Fabric', conf:0.90, age:'5d'},
+    {title:'AI-drafted follow-up emails in Sales', customer:'Litware · Meeting', category:'Feature Request', priority:'Medium', stage:'Prioritized', owner:'AN', area:'D365 Sales', conf:0.87, age:'6d'},
+    {title:'Intune compliance export too slow', customer:'Proseware · Email', category:'Performance', priority:'Medium', stage:'New', owner:'MK', area:'Intune', conf:0.79, age:'2d'},
+    {title:'Defender alert context for SOC triage', customer:'Wingtip · Teams', category:'Feature Request', priority:'High', stage:'Handoff', owner:'SK', area:'Defender', conf:0.85, age:'8d'},
+    {title:'Teams Rooms Copilot meeting recap', customer:'Contoso · Meeting', category:'Feature Request', priority:'High', stage:'Accepted', owner:'SK', area:'Teams', conf:0.92, age:'11d'}
+  ];
+
+  var state = { view:'grid', category:'All' };
+
+  function esc(s){ return s; }
+
+  function renderChips(){
+    var el = document.getElementById('chips');
+    var html = '<span class="label">Category</span>';
+    cats.forEach(function(c){
+      var active = c===state.category ? ' active' : '';
+      html += '<button class="chip'+active+'" data-cat="'+c+'">'+c+'</button>';
+    });
+    el.innerHTML = html;
+    el.querySelectorAll('.chip').forEach(function(btn){
+      btn.addEventListener('click', function(){ state.category = btn.getAttribute('data-cat'); render(); });
+    });
+  }
+
+  function filtered(){
+    return raw.filter(function(x){ return state.category==='All' || x.category===state.category; });
+  }
+
+  function renderGrid(){
+    var rows = filtered();
+    var html = '';
+    rows.forEach(function(it){
+      var cm = catMap[it.category];
+      html += '<div class="row">'+
+        '<span class="checkbox"></span>'+
+        '<div class="title-cell"><div class="t">'+it.title+'</div><div class="m">'+it.customer+' · '+it.age+' ago</div></div>'+
+        '<span style="width:130px"><span class="cat-pill" style="background:'+cm.bg+';color:'+cm.fg+'">'+it.category+'</span></span>'+
+        '<span class="prio"><span class="prio-dot" style="background:'+prioMap[it.priority]+'"></span><span style="font-size:13px;color:#323130">'+it.priority+'</span></span>'+
+        '<span style="width:96px;font-size:13px;color:#323130">'+it.stage+'</span>'+
+        '<span style="width:96px;font-size:13px;color:#605E5C">'+it.area+'</span>'+
+        '<span class="conf"><span class="conf-track"><span class="conf-fill" style="width:'+Math.round(it.conf*100)+'%"></span></span><span style="font-size:11px;color:#8A8886">'+it.conf.toFixed(2)+'</span></span>'+
+        '<span style="width:44px"><span class="owner" style="background:'+ownerMap[it.owner]+'">'+it.owner+'</span></span>'+
+      '</div>';
+    });
+    document.getElementById('gridRows').innerHTML = html;
+  }
+
+  function renderBoard(){
+    var all = filtered();
+    var html = '';
+    stages.forEach(function(st){
+      var items = all.filter(function(x){ return x.stage===st.key; });
+      html += '<div class="col"><div class="col-head"><span class="col-dot" style="background:'+st.color+'"></span><span class="col-name">'+st.name+'</span><span class="col-count">'+items.length+'</span></div><div>';
+      items.forEach(function(it){
+        var cm = catMap[it.category];
+        html += '<div class="kcard">'+
+          '<div class="kcard-top"><span class="kcard-cat" style="background:'+cm.bg+';color:'+cm.fg+'">'+it.category+'</span><span class="kcard-prio" style="background:'+prioMap[it.priority]+'"></span></div>'+
+          '<div class="kcard-title">'+it.title+'</div>'+
+          '<div class="kcard-meta"><span class="kcard-owner" style="background:'+ownerMap[it.owner]+'">'+it.owner+'</span><span class="kcard-cust">'+it.customer+'</span></div>'+
+        '</div>';
+      });
+      html += '</div></div>';
+    });
+    document.getElementById('boardView').innerHTML = html;
+  }
+
+  function render(){
+    renderChips();
+    document.getElementById('countPill').textContent = filtered().length + ' shown';
+    document.getElementById('gridView').classList.toggle('hide', state.view!=='grid');
+    document.getElementById('boardView').classList.toggle('show', state.view==='board');
+    document.getElementById('btnGrid').classList.toggle('active', state.view==='grid');
+    document.getElementById('btnBoard').classList.toggle('active', state.view==='board');
+    if(state.view==='grid') renderGrid(); else renderBoard();
+  }
+
+  document.getElementById('btnGrid').addEventListener('click', function(){ state.view='grid'; render(); });
+  document.getElementById('btnBoard').addEventListener('click', function(){ state.view='board'; render(); });
+
+  render();
+</script>
+</body>
+</html>

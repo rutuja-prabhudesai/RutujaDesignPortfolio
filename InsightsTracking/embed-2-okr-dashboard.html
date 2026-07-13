@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insights Accepted — OKR Dashboard</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#EAECF0;-webkit-font-smoothing:antialiased;font-family:'Segoe UI','Segoe UI Variable',system-ui,-apple-system,sans-serif;color:#242424}
+  .wrap{max-width:1360px;margin:0 auto;padding:28px 24px 40px}
+  .eyebrow{font-size:13px;font-weight:700;color:#0E700E;letter-spacing:.08em}
+  .htitle{margin:0;font-size:22px;font-weight:700}
+  .hsub{color:#8A8886;font-size:14px}
+  .headrow{display:flex;align-items:baseline;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+  .card{background:#FFFFFF;border:1px solid #E1DFDD;border-radius:12px;overflow:hidden;box-shadow:0 16px 44px rgba(15,20,30,.14)}
+  .topbar{height:48px;display:flex;align-items:center;gap:12px;padding:0 20px;background:#FAF9F8;border-bottom:1px solid #EDEBE9}
+  .pill-ok{background:#F1F8F1;color:#0E700E;font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px}
+  .spacer{flex:1}
+  .panel{padding:22px}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
+  .kpi{border:1px solid #EDEBE9;border-radius:12px;padding:18px}
+  .kpi .label{font-size:12px;color:#605E5C;font-weight:600}
+  .kpi .val{font-size:40px;font-weight:700;letter-spacing:-.02em;margin:6px 0 2px}
+  .kpi .note{font-size:12px}
+  .chart-row{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:16px}
+  .box{border:1px solid #EDEBE9;border-radius:12px;padding:18px}
+  .box-title{font-size:14px;font-weight:700;margin-bottom:2px}
+  .box-sub{font-size:12px;color:#8A8886;margin-bottom:12px}
+  .months{display:flex;justify-content:space-between;padding:0 20px;font-size:11px;color:#8A8886}
+  .legend-row{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:7px}
+  .legend-dot{width:9px;height:9px;border-radius:2px;display:block}
+  .bottom-row{display:grid;grid-template-columns:1.3fr 1fr;gap:16px}
+  .bars{display:flex;align-items:flex-end;gap:20px;height:172px;padding:0 6px}
+  .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+  .bar-val{font-size:12px;font-weight:700;color:#323130}
+  .bar-fill{width:100%;max-width:46px;border-radius:6px 6px 0 0;height:0;transition:height 1s cubic-bezier(.2,.8,.2,1)}
+  .bar-label{font-size:11px;color:#605E5C;text-align:center;line-height:1.2}
+  .recent-item{display:flex;align-items:center;gap:10px;padding:6px 0}
+  .recent-dot{width:8px;height:8px;border-radius:50%;background:#0E700E;flex:none;display:block}
+  .recent-title{font-size:13px;font-weight:600;color:#242424;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .recent-meta{font-size:11px;color:#8A8886}
+  .recent-when{font-size:11px;color:#0E700E;font-weight:600;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="headrow">
+    <span class="eyebrow">02 &mdash; DASHBOARD</span>
+    <h2 class="htitle">Insights Accepted — OKR Dashboard</h2>
+    <span class="hsub">Measure how much customer feedback actually reaches the roadmap</span>
+  </div>
+
+  <div class="card">
+    <div class="topbar">
+      <span style="font-size:15px;font-weight:700">Insights OKR &middot; FY26 Q2</span>
+      <span class="pill-ok">On track</span>
+      <div class="spacer"></div>
+      <span style="font-size:12px;color:#8A8886">Power BI &middot; refreshed 4 min ago</span>
+    </div>
+
+    <div class="panel" id="sentinel">
+      <div class="kpi-row">
+        <div class="kpi" style="background:linear-gradient(180deg,#F7FAFE,#FFFFFF)">
+          <div class="label">Insights Accepted rate</div>
+          <div class="val" id="kPct" style="color:#0F6CBD">0%</div>
+          <div class="note" style="color:#0E700E;font-weight:600">&#9650; +6 pts vs last quarter</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Accepted / Submitted</div>
+          <div class="val"><span id="kAccepted">0</span><span style="font-size:20px;color:#8A8886;font-weight:600"> / <span id="kSubmitted">0</span></span></div>
+          <div class="note" style="color:#605E5C">insights this quarter</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Avg time to acceptance</div>
+          <div class="val" id="kCycle">0.0d</div>
+          <div class="note" style="color:#0E700E;font-weight:600">&#9660; down from 28d</div>
+        </div>
+        <div class="kpi" style="background:linear-gradient(180deg,#F7F4FC,#FFFFFF)">
+          <div class="label">Manual hours saved</div>
+          <div class="val" id="kHours" style="color:#8661C5">0</div>
+          <div class="note" style="color:#605E5C">via AI automations</div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="box">
+          <div class="box-title">Acceptance rate trend</div>
+          <div class="box-sub">% of submitted insights accepted onto the roadmap</div>
+          <svg viewBox="0 0 640 180" style="width:100%;height:180px;display:block">
+            <line x1="24" y1="24" x2="24" y2="158" stroke="#EDEBE9"></line>
+            <line x1="24" y1="158" x2="616" y2="158" stroke="#EDEBE9"></line>
+            <path id="trendArea" fill="rgba(15,108,189,.10)" style="opacity:0;transition:opacity 1s ease .3s"></path>
+            <path id="trendLine" fill="none" stroke="#0F6CBD" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" style="transition:stroke-dashoffset 1.4s ease"></path>
+            <g id="trendDots"></g>
+          </svg>
+          <div class="months"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div>
+        </div>
+        <div class="box">
+          <div class="box-title">Insights by category</div>
+          <div style="display:flex;align-items:center;gap:16px;margin-top:12px">
+            <svg viewBox="0 0 120 120" style="width:120px;height:120px;flex:none">
+              <g id="donutSegs"></g>
+              <text x="60" y="57" text-anchor="middle" style="font-size:19px;font-weight:700;fill:#242424;font-family:inherit">342</text>
+              <text x="60" y="73" text-anchor="middle" style="font-size:9px;fill:#8A8886;font-family:inherit">insights</text>
+            </svg>
+            <div id="donutLegend" style="display:flex;flex-direction:column;gap:7px;flex:1"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-row">
+        <div class="box">
+          <div class="box-title" style="margin-bottom:16px">Accepted insights by product area</div>
+          <div class="bars" id="prodBars"></div>
+        </div>
+        <div class="box">
+          <div class="box-title" style="margin-bottom:14px">Recently accepted</div>
+          <div id="recentList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var productData = [
+    {label:'M365 Copilot', val:82, color:'#0F6CBD'},
+    {label:'Teams', val:64, color:'#6264A7'},
+    {label:'Azure', val:51, color:'#0078D4'},
+    {label:'Fabric', val:47, color:'#8661C5'},
+    {label:'Purview', val:33, color:'#0E700E'},
+    {label:'Intune', val:27, color:'#986F0B'}
+  ];
+  var donutData = [
+    {label:'Feature Request', pct:38, color:'#0F6CBD'},
+    {label:'Sentiment', pct:20, color:'#0E700E'},
+    {label:'Blocker', pct:14, color:'#C50F1F'},
+    {label:'UX Friction', pct:12, color:'#986F0B'},
+    {label:'Performance', pct:9, color:'#8661C5'},
+    {label:'Question', pct:7, color:'#6264A7'}
+  ];
+  var trendVals = [41,48,52,58,63,68];
+  var recent = [
+    {title:'Teams Rooms Copilot meeting recap', meta:'Copilot · Contoso', when:'2d ago'},
+    {title:'Defender alert context for SOC', meta:'Security · Wingtip', when:'4d ago'},
+    {title:'Fabric Direct Lake scheduling', meta:'Fabric · Tailspin', when:'6d ago'},
+    {title:'AI follow-up emails in Sales', meta:'D365 Sales · Litware', when:'9d ago'}
+  ];
+
+  // static markup: product bars, recent list, donut legend
+  (function(){
+    var maxV = Math.max.apply(null, productData.map(function(d){return d.val;}));
+    var html = '';
+    productData.forEach(function(b){
+      html += '<div class="bar-col"><span class="bar-val">'+b.val+'</span><div class="bar-fill" data-h="'+Math.round(b.val/maxV*150)+'" style="background:'+b.color+'"></div><span class="bar-label">'+b.label+'</span></div>';
+    });
+    document.getElementById('prodBars').innerHTML = html;
+
+    html = '';
+    recent.forEach(function(r){
+      html += '<div class="recent-item"><span class="recent-dot"></span><div style="flex:1;min-width:0"><div class="recent-title">'+r.title+'</div><div class="recent-meta">'+r.meta+'</div></div><span class="recent-when">'+r.when+'</span></div>';
+    });
+    document.getElementById('recentList').innerHTML = html;
+
+    html = '';
+    donutData.forEach(function(d){
+      html += '<div class="legend-row"><span class="legend-dot" style="background:'+d.color+'"></span><span style="color:#323130;flex:1">'+d.label+'</span><span style="color:#8A8886;font-weight:600">'+d.pct+'%</span></div>';
+    });
+    document.getElementById('donutLegend').innerHTML = html;
+  })();
+
+  function trendGeom(){
+    var w=592, x0=24, vals=trendVals, n=vals.length;
+    var yb=158, yt=24, vmin=38, vmax=72;
+    var pts = vals.map(function(v,i){ return { x:x0+(i/(n-1))*w, y:yb-((v-vmin)/(vmax-vmin))*(yb-yt) }; });
+    var line = 'M'+pts[0].x+' '+pts[0].y;
+    for(var i=1;i<pts.length;i++) line += ' L'+pts[i].x+' '+pts[i].y;
+    var area = line+' L'+pts[n-1].x+' '+yb+' L'+pts[0].x+' '+yb+' Z';
+    return {line:line, area:area, pts:pts};
+  }
+
+  var animated = false;
+  function animate(){
+    if(animated) return;
+    animated = true;
+
+    var T = {pct:68, accepted:233, submitted:342, cycle:12.4, hours:1120};
+    var dur = 1300, start = performance.now();
+    function ease(t){ return 1-Math.pow(1-t,3); }
+    function tick(now){
+      var p = Math.min(1,(now-start)/dur), e = ease(p);
+      document.getElementById('kPct').textContent = Math.round(T.pct*e)+'%';
+      document.getElementById('kAccepted').textContent = Math.round(T.accepted*e);
+      document.getElementById('kSubmitted').textContent = Math.round(T.submitted*e);
+      document.getElementById('kCycle').textContent = (T.cycle*e).toFixed(1)+'d';
+      document.getElementById('kHours').textContent = Math.round(T.hours*e).toLocaleString();
+      if(p<1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    var tr = trendGeom();
+    document.getElementById('trendLine').setAttribute('d', tr.line);
+    document.getElementById('trendArea').setAttribute('d', tr.area);
+    document.getElementById('trendLine').style.strokeDashoffset = '0';
+    document.getElementById('trendArea').style.opacity = '1';
+    var dotsHtml = '';
+    tr.pts.forEach(function(p,i){
+      dotsHtml += '<circle cx="'+p.x+'" cy="'+p.y+'" r="3.5" fill="#FFFFFF" stroke="#0F6CBD" stroke-width="2" style="opacity:0;transition:opacity .4s ease '+(0.6+i*0.12)+'s"></circle>';
+    });
+    document.getElementById('trendDots').innerHTML = dotsHtml;
+    setTimeout(function(){
+      document.querySelectorAll('#trendDots circle').forEach(function(c){ c.style.opacity = '1'; });
+    }, 30);
+
+    var C = 2*Math.PI*46, acc = 0;
+    var segHtml = '';
+    donutData.forEach(function(d,i){
+      var dash = d.pct/100*C;
+      var rot = -90 + acc*3.6;
+      segHtml += '<circle cx="60" cy="60" r="46" fill="none" stroke="'+d.color+'" stroke-width="16" stroke-dasharray="0 '+C+'" data-dash="'+dash+' '+(C-dash)+'" transform="rotate('+rot+' 60 60)" style="transition:stroke-dasharray 1s ease '+(i*0.09)+'s"></circle>';
+      acc += d.pct;
+    });
+    document.getElementById('donutSegs').innerHTML = segHtml;
+    setTimeout(function(){
+      document.querySelectorAll('#donutSegs circle').forEach(function(c){ c.setAttribute('stroke-dasharray', c.getAttribute('data-dash')); });
+    }, 30);
+
+    document.querySelectorAll('.bar-fill').forEach(function(el, i){
+      setTimeout(function(){ el.style.height = el.getAttribute('data-h')+'px'; }, i*80);
+    });
+  }
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting) animate(); });
+  }, {threshold:0.25});
+  io.observe(document.getElementById('sentinel'));
+</script>
+</body>
+</html>

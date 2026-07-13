@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Five AI Skills Automating the Lifecycle</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#EAECF0;-webkit-font-smoothing:antialiased;font-family:'Segoe UI','Segoe UI Variable',system-ui,-apple-system,sans-serif;color:#242424}
+  .wrap{max-width:1360px;margin:0 auto;padding:28px 24px 40px}
+  .eyebrow{font-size:13px;font-weight:700;color:#8661C5;letter-spacing:.08em}
+  .htitle{margin:0;font-size:22px;font-weight:700}
+  .hsub{color:#8A8886;font-size:14px}
+  .headrow{display:flex;align-items:baseline;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+  .card{background:#FFFFFF;border:1px solid #E1DFDD;border-radius:12px;overflow:hidden;box-shadow:0 16px 44px rgba(15,20,30,.14)}
+  .topbar{height:48px;display:flex;align-items:center;gap:10px;padding:0 20px;background:linear-gradient(90deg,#F7F4FC,#F7FAFE);border-bottom:1px solid #EDEBE9}
+  .body{display:flex;min-height:520px}
+  .list{width:340px;flex:none;border-right:1px solid #EDEBE9;padding:16px;background:#FAF9F8;display:flex;flex-direction:column;gap:10px}
+  .skbtn{text-align:left;border:1px solid #EDEBE9;background:#fff;border-radius:10px;padding:14px;cursor:pointer;font-family:inherit;display:flex;gap:12px;align-items:flex-start;transition:all .15s;width:100%}
+  .skbtn:hover{border-color:#8661C5}
+  .skbtn.active{border-color:#8661C5}
+  .sknum{width:34px;height:34px;flex:none;border-radius:8px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .skname{display:block;font-size:14px;font-weight:700;color:#242424}
+  .sktag{display:block;font-size:12px;color:#8A8886;margin-top:3px;line-height:1.4}
+  .detail{flex:1;min-width:0;padding:24px 28px}
+  .dethead{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .detnum{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#8661C5,#0F6CBD);color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .runinfo{display:flex;align-items:center;gap:8px;margin:14px 0 20px;font-size:12px;color:#605E5C;flex-wrap:wrap}
+  .tagpill{font-weight:600;padding:4px 10px;border-radius:6px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .lbl{font-size:11px;font-weight:700;color:#8A8886;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+  .inputbox{border:1px solid #EDEBE9;border-radius:10px;padding:14px;background:#FAF9F8;font-size:13px;line-height:1.55;color:#484644;min-height:96px}
+  .runbtn{margin-top:14px;width:100%;height:42px;border:none;border-radius:9px;background:linear-gradient(135deg,#8661C5,#0F6CBD);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
+  .outputbox{border:1px solid #EDEBE9;border-radius:10px;min-height:96px;background:#fff;overflow:hidden}
+  .idle{padding:22px 16px;text-align:center;color:#A19F9D;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:8px;min-height:96px;justify-content:center}
+  .idle-badge{width:34px;height:34px;border-radius:50%;border:1.6px dashed #C8C6C4;display:flex;align-items:center;justify-content:center}
+  .proc{padding:16px}
+  .proc-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .spinner{width:18px;height:18px;border:2.4px solid #E1DFDD;border-top-color:#8661C5;border-radius:50%;display:block;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes pulseDot{0%,100%{opacity:.25}50%{opacity:1}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .proc-step{display:flex;align-items:center;gap:9px;font-size:12px;color:#605E5C;padding:5px 0}
+  .proc-step-dot{width:6px;height:6px;border-radius:50%;background:#8661C5;display:block;animation:pulseDot 1.2s ease infinite}
+  .out-wrap{animation:fadeUp .4s ease}
+  .out-head{display:flex;align-items:center;gap:8px;padding:12px 14px;background:#F1F8F1;border-bottom:1px solid #E4EFE4}
+  .out-check{width:18px;height:18px;border-radius:50%;background:#0E700E;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center}
+  .out-body{padding:6px 14px 12px}
+  .out-row{display:flex;gap:12px;padding:7px 0;border-bottom:1px solid #F3F2F1;font-size:12.5px}
+  .out-k{width:110px;flex:none;color:#8A8886}
+  .out-v{flex:1;color:#242424;font-weight:600}
+  .out-writes{margin-top:10px;font-size:11px;color:#0F6CBD;font-weight:600}
+  .pipeline{margin-top:24px;padding-top:18px;border-top:1px solid #F3F2F1}
+  .pipe-strip{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .pipe-pill{font-size:12px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid}
+  .pipe-arrow{color:#C8C6C4}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="headrow">
+    <span class="eyebrow">03 &mdash; AI SKILLS</span>
+    <h2 class="htitle">Five AI Skills Automating the Lifecycle</h2>
+    <span class="hsub">Each skill targets one high-friction step and writes results back into the system</span>
+  </div>
+
+  <div class="card">
+    <div class="topbar">
+      <svg viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M12 2 L13.8 8.2 L20 10 L13.8 11.8 L12 18 L10.2 11.8 L4 10 L10.2 8.2 Z" fill="#8661C5"></path></svg>
+      <span style="font-size:15px;font-weight:700">CoWork (Copilot) Skills</span>
+      <span style="color:#C8C6C4">|</span>
+      <span style="font-size:12px;color:#605E5C">Foundation: CoWork + GitHub Copilot CLI &harr; Dynamics 365</span>
+    </div>
+
+    <div class="body">
+      <div class="list" id="skillList"></div>
+      <div class="detail" id="detail"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var skillsData = [
+    {name:'Capture Feedback', tag:'Ingests customer emails, Teams chats & meeting transcripts into CRM as a structured feedback record.', runsOn:'CoWork · D365', writes:'Dynamics 365 CRM', iconBg:'#EFF6FC', iconFg:'#0F6CBD',
+      input:'Email — Contoso IT Director: "The Copilot rollout is going well, but we can\'t break usage down by department, which blocks our internal adoption reporting."',
+      outTitle:'Feedback record FB-4821 created',
+      out:[{k:'Source',v:'Email · Contoso Ltd'},{k:'Contact',v:'IT Director'},{k:'Product',v:'Microsoft 365 Copilot'},{k:'Raw sentiment',v:'Mixed'},{k:'Linked account',v:'Contoso Ltd'}]},
+    {name:'Extract & Categorize', tag:'Extracts discrete insights and tags each one — sentiment, blocker, feature request or UX friction.', runsOn:'CoWork · Copilot CLI', writes:'CRM · Insight table', iconBg:'#F1F8F1', iconFg:'#0E700E',
+      input:'Feedback record FB-4821 (raw customer text + metadata).',
+      outTitle:'2 insights extracted & categorized',
+      out:[{k:'Insight 1',v:'"Usage analytics by department" → Feature Request'},{k:'Insight 2',v:'"Positive rollout experience" → Sentiment'},{k:'Priority hint',v:'High'},{k:'Confidence',v:'0.91'}]},
+    {name:'Prioritize Insights', tag:'Scores insights by customer impact, frequency & strategic fit, then recommends what reaches the product team.', runsOn:'CoWork · D365', writes:'CRM · Priority field', iconBg:'#FBF6E9', iconFg:'#986F0B',
+      input:'47 open insights in the current cycle.',
+      outTitle:'Score 87 / 100 — Recommend to Product',
+      out:[{k:'Customer impact',v:'High → 34 / 40'},{k:'Frequency',v:'12 accounts → 26 / 30'},{k:'Strategic fit',v:'Copilot OKR → 27 / 30'},{k:'Recommendation',v:'Escalate to Copilot PM'}]},
+    {name:'Product Team Handoff', tag:'Generates Azure DevOps work items and UAT test cases for accepted insights — no manual re-entry.', runsOn:'Copilot CLI · DevOps', writes:'Azure DevOps · UAT', iconBg:'#F5F0FB', iconFg:'#8661C5',
+      input:'Insight INS-1190 (marked accepted by PM).',
+      outTitle:'Work item + UAT created',
+      out:[{k:'Work item',v:'User Story #78432'},{k:'Title',v:'Departmental Copilot usage analytics'},{k:'Area path',v:'Copilot / Analytics'},{k:'UAT',v:'UAT-556 · 3 test cases'},{k:'Sprint',v:'Sprint 214'}]},
+    {name:'OKR Dashboard Sync', tag:'Writes accepted insights back to the Power BI OKR dashboard the moment a product team accepts them.', runsOn:'CoWork · Power BI', writes:'Power BI · OKR report', iconBg:'#EFF6FC', iconFg:'#0F6CBD',
+      input:'INS-1190 status changed → Accepted.',
+      outTitle:'OKR dashboard updated',
+      out:[{k:'Insights Accepted',v:'233 (+1)'},{k:'Acceptance rate',v:'68% (+0.3 pts)'},{k:'Avg cycle time',v:'12.4 days'},{k:'Reporting period',v:'FY26 Q2'}]}
+  ];
+  var pipeSteps = ['Capture','Categorize','Prioritize','Handoff','OKR Sync'];
+  var sparkSvg = '<svg viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 2 L13.8 8.2 L20 10 L13.8 11.8 L12 18 L10.2 11.8 L4 10 L10.2 8.2 Z" fill="currentColor"></path></svg>';
+
+  var activeSkill = 0;
+  var runStep = {}; // 0 idle, 1 processing, 2 done
+  var runTimer = null;
+
+  function renderList(){
+    var html = '';
+    skillsData.forEach(function(sk, i){
+      var active = i===activeSkill ? ' active' : '';
+      html += '<button class="skbtn'+active+'" data-i="'+i+'">'+
+        '<span class="sknum" style="background:'+sk.iconBg+';color:'+sk.iconFg+'">'+('0'+(i+1)).slice(-2)+'</span>'+
+        '<span style="flex:1;min-width:0"><span class="skname">'+sk.name+'</span><span class="sktag">'+sk.tag+'</span></span>'+
+      '</button>';
+    });
+    document.getElementById('skillList').innerHTML = html;
+    document.querySelectorAll('.skbtn').forEach(function(btn){
+      btn.addEventListener('click', function(){ activeSkill = parseInt(btn.getAttribute('data-i'),10); renderDetail(); renderList(); });
+    });
+  }
+
+  function renderOutput(){
+    var sk = skillsData[activeSkill];
+    var step = runStep[activeSkill] || 0;
+    if(step===0){
+      return '<div class="idle"><span class="idle-badge" style="color:#C8C6C4">'+sparkSvg+'</span>Run the skill to see structured output</div>';
+    }
+    if(step===1){
+      var stepsHtml = '';
+      var labels = ['Reading input…','Applying business rules…','Generating structured output…','Writing back to system…'];
+      var delays = ['0s','.25s','.5s','.75s'];
+      labels.forEach(function(l,i){
+        stepsHtml += '<div class="proc-step" style="animation:none"><span class="proc-step-dot" style="animation-delay:'+delays[i]+'"></span>'+l+'</div>';
+      });
+      return '<div class="proc"><div class="proc-head"><span class="spinner"></span><span style="font-size:13px;font-weight:600;color:#8661C5">Copilot is working…</span></div>'+stepsHtml+'</div>';
+    }
+    var rowsHtml = '';
+    sk.out.forEach(function(o){
+      rowsHtml += '<div class="out-row"><span class="out-k">'+o.k+'</span><span class="out-v">'+o.v+'</span></div>';
+    });
+    return '<div class="out-wrap"><div class="out-head"><span class="out-check">&#10003;</span><span style="font-size:13px;font-weight:700;color:#0E700E">'+sk.outTitle+'</span></div><div class="out-body">'+rowsHtml+'<div class="out-writes">&#8618; Written to '+sk.writes+'</div></div></div>';
+  }
+
+  function renderDetail(){
+    var sk = skillsData[activeSkill];
+    var step = runStep[activeSkill] || 0;
+    var pipeHtml = '';
+    pipeSteps.forEach(function(label, i){
+      var on = i===activeSkill;
+      var bg = on ? '#F3EEFB' : '#FFFFFF', fg = on ? '#8661C5' : '#8A8886', bd = on ? '#8661C5' : '#E1DFDD';
+      pipeHtml += '<span class="pipe-pill" style="background:'+bg+';color:'+fg+';border-color:'+bd+'">'+label+'</span>';
+      if(i<pipeSteps.length-1) pipeHtml += '<span class="pipe-arrow">&rarr;</span>';
+    });
+
+    document.getElementById('detail').innerHTML =
+      '<div class="dethead"><span class="detnum">'+('0'+(activeSkill+1)).slice(-2)+'</span><h3 style="margin:0;font-size:21px;font-weight:700">'+sk.name+'</h3></div>'+
+      '<p style="margin:0 0 4px 0;font-size:14px;color:#484644;line-height:1.5;max-width:640px">'+sk.tag+'</p>'+
+      '<div class="runinfo"><span class="tagpill" style="background:#F7F4FC;color:#8661C5">Runs on '+sk.runsOn+'</span><span style="color:#C8C6C4">&rarr;</span><span class="tagpill" style="background:#EFF6FC;color:#0F6CBD">Writes to '+sk.writes+'</span></div>'+
+      '<div class="grid2">'+
+        '<div><div class="lbl">Input</div><div class="inputbox">'+sk.input+'</div>'+
+        '<button class="runbtn" id="runBtn">'+sparkSvg+'<span id="runLabel">'+(step===2?'Re-run skill':'Run skill')+'</span></button></div>'+
+        '<div><div class="lbl">Output</div><div class="outputbox" id="outputBox">'+renderOutput()+'</div></div>'+
+      '</div>'+
+      '<div class="pipeline"><div class="lbl">Where it sits in the lifecycle</div><div class="pipe-strip">'+pipeHtml+'</div></div>';
+
+    document.getElementById('runBtn').addEventListener('click', runActive);
+  }
+
+  function runActive(){
+    var i = activeSkill;
+    runStep[i] = 1;
+    document.getElementById('outputBox').innerHTML = renderOutput();
+    document.getElementById('runLabel').textContent = 'Run skill';
+    clearTimeout(runTimer);
+    runTimer = setTimeout(function(){
+      runStep[i] = 2;
+      if(activeSkill===i){
+        document.getElementById('outputBox').innerHTML = renderOutput();
+        document.getElementById('runLabel').textContent = 'Re-run skill';
+      }
+    }, 1750);
+  }
+
+  renderList();
+  renderDetail();
+</script>
+</body>
+</html>
